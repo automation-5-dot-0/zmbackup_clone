@@ -14,7 +14,8 @@ function check_env() {
     printf "[ROOT]\n"
   fi
   printf "  Old Zmbackup Install...	  "
-  su -s /bin/bash -c "whereis zmbackup" "$OSE_USER" > /dev/null 2>&1
+  #su -s /bin/bash -c "whereis zmbackup" "$OSE_USER" > /dev/null 2>&1
+  sudo -u $OSE_USER /bin/bash -c "which zmbackup" > /dev/null 2>&1
   BASHERRCODE=$?
   if [ $BASHERRCODE != 0 ]; then
     printf "[NEW INSTALL]\n"
@@ -25,7 +26,8 @@ function check_env() {
     export UPGRADE="N"
     export UNINSTALL="Y"
   elif [[ $1 == '--force-upgrade' ]]; then
-    VERSION=$(su -s /bin/bash -c "zmbackup -h" "$OSE_USER")
+    #VERSION=$(su -s /bin/bash -c "zmbackup -h" "$OSE_USER")
+    VERSION=$(sudo -u $OSE_USER /bin/bash -c "zmbackup -h")
     if [[ "$VERSION" != "$ZMBKP_VERSION" ]]; then
       printf "[OLD VERSION] - EXECUTING UPGRADE ROUTINE\n"
       export UPGRADE="Y"
